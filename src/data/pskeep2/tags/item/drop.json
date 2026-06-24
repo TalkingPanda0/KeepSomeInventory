@@ -1,4 +1,4 @@
-{"values": 
+{"values": [
 "minecraft:purple_dye",
 "minecraft:melon",
 "minecraft:mangrove_slab",
@@ -1399,4 +1399,5 @@
 "minecraft:tinted_glass",
 "minecraft:big_dripleaf",
 "minecraft:ominous_trial_key"
+]
 }
