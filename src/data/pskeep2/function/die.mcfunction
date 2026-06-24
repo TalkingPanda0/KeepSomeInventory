@@ -54,28 +54,24 @@ execute unless data storage pskeep2:main offhand.left if data storage pskeep2:ma
 execute function ~/drop_xp:
     #> https://minecraft.wiki/w/Experience#Leveling_up
     # set up variables
-    store result score .level pskeep2 store result score .xp pskeep2 store result score #level_squared pskeep2 xp query @s levels
-    store result score .points pskeep2 xp query @s points
+    execute store result score .level pskeep2 store result score .xp pskeep2 store result score #level_squared pskeep2 run xp query @s levels
+    execute store result score .points pskeep2 run xp query @s points
     scoreboard players operation #level_squared pskeep2 *= #level_squared pskeep2
-    # calculate level² coefficient
-    if score .level pskeep2 matches 17..31 scoreboard players operation #level_squared pskeep2 *= #5 pskeep2
-    if score .level pskeep2 matches 32.. scoreboard players operation #level_squared pskeep2 *= #9 pskeep2
-    # calculate level coefficient
-    if score .level pskeep2 matches 1..16 scoreboard players operation .xp pskeep2 *= #6 pskeep2
-    if score .level pskeep2 matches 17..31 scoreboard players operation .xp pskeep2 *= #-81 pskeep2
-    if score .level pskeep2 matches 32.. scoreboard players operation .xp pskeep2 *= #-325 pskeep2
-    # divide to correct for .5 values
-    if score .level pskeep2 matches 17.. scoreboard players operation #level_squared pskeep2 /= #2 pskeep2
-    if score .level pskeep2 matches 17.. scoreboard players operation .xp pskeep2 /= #2 pskeep2
-    # add flat values
-    if score .level pskeep2 matches 17..31 scoreboard players add .xp pskeep2 360
-    if score .level pskeep2 matches 32.. scoreboard players add .xp pskeep2 2220
-    # add everything up
+    execute if score .level pskeep2 matches 17..31 run scoreboard players operation #level_squared pskeep2 *= #5 pskeep2
+    execute if score .level pskeep2 matches 32.. run scoreboard players operation #level_squared pskeep2 *= #9 pskeep2
+    execute if score .level pskeep2 matches 1..16 run scoreboard players operation .xp pskeep2 *= #6 pskeep2
+    execute if score .level pskeep2 matches 17..31 run scoreboard players operation .xp pskeep2 *= #-81 pskeep2
+    execute if score .level pskeep2 matches 32.. run scoreboard players operation .xp pskeep2 *= #-325 pskeep2
+    execute if score .level pskeep2 matches 17.. run scoreboard players operation #level_squared pskeep2 /= #2 pskeep2
+    execute if score .level pskeep2 matches 17.. run scoreboard players operation .xp pskeep2 /= #2 pskeep2
+    execute if score .level pskeep2 matches 17..31 run scoreboard players add .xp pskeep2 360
+    execute if score .level pskeep2 matches 32.. run scoreboard players add .xp pskeep2 2220
     scoreboard players operation .xp pskeep2 += #level_squared pskeep2
-    store result storage pskeep2:main drop.xp int 1 scoreboard players operation .xp pskeep2 += .points pskeep2
-    # drop xp orb
-    function pskeep2:drop/xp with storage pskeep2:main drop
-    # reset player xp
+    scoreboard players operation .xp pskeep2 += .points pskeep2
+    execute store result score .xpiter pskeep2 run scoreboard players get .xp pskeep2
+    scoreboard players operation .xpiter pskeep2 /= #xpmax pskeep2
+    execute store result storage pskeep2:main drop.xp int 1 run scoreboard players operation .xp pskeep2 %= #xpmax pskeep2
+    execute if score .xp pskeep2 matches 1.. run function pskeep2:drop/xp with storage pskeep2:main drop
     xp set @s 0 levels
     xp set @s 0 points
 
