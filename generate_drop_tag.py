@@ -2,7 +2,7 @@ import requests
 import json
 import os
 
-should_drop_if_includes = ["compass", "clock", "_sword", "_axe", "_pickaxe", "_hoe", "_shovel", "trident", "bow", "shield",
+should_keep_if_includes = ["compass", "spear", "clock", "_sword", "_axe", "_pickaxe", "_hoe", "_shovel", "trident", "bow", "shield",
     "shears", "flint_and_steel", "_on_a_stick", "spyglass", "fishing_rod", "written_book", "writable_book",
     "bucket", "firework_rocket", "arrow", "map", "_boat", "_raft", "minecart", "saddle", "_horse_armor", "golden_apple",
     "totem_of_undying", "potion", "goat_horn", "ender_eye", "ender_pearl", "torch", "_helmet", "_chestplate",
@@ -12,18 +12,14 @@ blocked_common_tags = ["#c:hidden_from_recipe_viewers", "#c:dyed/black", "#c:dye
     "#c:dyed/green", "#c:dyed/light_blue", "#c:dyed/light_gray", "#c:dyed/lime", "#c:dyed/magenta", "#c:dyed/orange", "#c:dyed/pink",
     "#c:dyed/purple", "#c:dyed/red", "#c:dyed/white", "#c:dyed/yellow"]
 
-blocked_vanilla_tags = ["#minecraft:beacon_payment_items", "#minecraft:camel_food", "#minecraft:cat_food", "#minecraft:cod_food",
-    "#minecraft:fox_food", "#minecraft:frog_food", "#minecraft:goat_food", "#minecraft:hoglin_food", "#minecraft:ignored_by_piglin_babies",
-    "#minecraft:llama_food", "#minecraft:llama_tempt_items", "#minecraft:ocelot_food", "#minecraft:panda_food", "#minecraft:parrot_poisonous_food",
-    "#minecraft:pig_food", "#minecraft:piglin_food", "#minecraft:rabbit_food", "#minecraft:sheep_food", "#minecraft:strider_food",
-    "#minecraft:trim_materials", "#minecraft:turtle_food"]
+blocked_vanilla_tags = ["#minecraft:beacon_payment_items", "#minecraft:hoglin_food", "#minecraft:ignored_by_piglin_babies", "#minecraft:llama_tempt_items","#minecraft:trim_materials"]
 
 all_items_url = "https://raw.githubusercontent.com/misode/mcmeta/registries/item/data.min.json"
 
 res = requests.get(all_items_url)
 all_items: list[str] = res.json()
 
-filtered_items = [f'minecraft:{i}' for i in all_items if not any([s in i for s in should_drop_if_includes])]
+filtered_items = [f'minecraft:{i}' for i in all_items if not any([s in i for s in should_keep_if_includes])]
 
 all_vanilla_tags_url = "https://raw.githubusercontent.com/misode/mcmeta/summary/data/tag/item/data.min.json"
 

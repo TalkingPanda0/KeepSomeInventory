@@ -25,8 +25,11 @@ advancement revoke @s only ~/
 clear @s *[enchantments~[{enchantments:vanishing_curse}]]
 # store items before and after clearing
 data modify storage pskeep2:main items.all set from entity @s Inventory
+execute if data entity @s equipment.offhand run function pskeep2:drop/offhand
+data modify storage pskeep2:main offhand.item set from entity @s equipment.offhand
 clear @s #pskeep2:drop
 data modify storage pskeep2:main items.left set from entity @s Inventory
+data modify storage pskeep2:main offhand.left set from entity @s equipment.offhand
 
 # if no items are left after clearing but were before -- drop all
 unless data storage pskeep2:main items.left[0] if data storage pskeep2:main items.all[0] function ~/drop_all_recursive:
@@ -45,6 +48,8 @@ if data storage pskeep2:main items.all[0] function ~/drop_recursive:
     # if no items are left -- drop all to prevent unforseen behavior
     unless data storage pskeep2:main items.left[0] if data storage pskeep2:main items.all[0] return run function ~/../drop_all_recursive
     if data storage pskeep2:main items.all[0] function ~/
+
+execute unless data storage pskeep2:main offhand.left if data storage pskeep2:main offhand.item run function pskeep2:drop/item with storage pskeep2:main offhand
 
 execute function ~/drop_xp:
     #> https://minecraft.wiki/w/Experience#Leveling_up
@@ -73,3 +78,5 @@ execute function ~/drop_xp:
     # reset player xp
     xp set @s 0 levels
     xp set @s 0 points
+
+data remove storage pskeep2:main offhand
